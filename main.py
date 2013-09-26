@@ -23,17 +23,18 @@ def actionManager():
         actionQueue.task_done()
         actionIptable(ip)
         # sending mail alert :)
-        msg = MIMEText(line)
-        msg['Subject'] = 'KIDS ALERT : ', ip
-        msg['From'] = config.get('smtp', 'from')
-        msg['To'] = config.get('smtp', 'to')
-        server = smtplib.SMTP(
-            config.get('smtp', 'server'),
-            config.get('smtp', 'port'),
-        )
-        server.login(config.get('smtp', 'user'), config.get('smtp', 'pass'))
-        server.sendmail(msg['From'], ['To'], msg.as_string())
-        server.quit()
+        if config.get('smtp','enabled') == 'true':
+            msg = MIMEText(line)
+            msg['Subject'] = 'KIDS ALERT : ', ip
+            msg['From'] = config.get('smtp', 'from')
+            msg['To'] = config.get('smtp', 'to')
+            server = smtplib.SMTP(
+                config.get('smtp', 'server'),
+                config.get('smtp', 'port'),
+            )
+            server.login(config.get('smtp', 'user'), config.get('smtp', 'pass'))
+            server.sendmail(msg['From'], ['To'], msg.as_string())
+            server.quit()
 
 
 def logWatcher():
